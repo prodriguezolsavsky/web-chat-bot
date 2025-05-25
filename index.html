@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot con n8n</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 3rem auto;
+      padding: 1rem;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    #respuesta {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f4f4f4;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mi Chatbot con n8n 🤖</h1>
+  <input type="text" id="msg" placeholder="Escribí tu mensaje..." />
+  <button onclick="enviar()">Enviar</button>
+  <div id="respuesta">Esperando tu mensaje...</div>
+
+  <script>
+    async function enviar() {
+      const mensaje = document.getElementById("msg").value;
+      const respuestaDiv = document.getElementById("respuesta");
+
+      respuestaDiv.innerText = "Pensando...";
+
+      try {
+        const res = await fetch("https://4839-181-92-129-76.ngrok-free.app/webhook/53c136fe-3e77-4709-a143-fe82746dd8b6", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ mensaje })
+        });
+
+        const data = await res.json();
+        respuestaDiv.innerText = data.respuesta || "No se recibió respuesta.";
+      } catch (error) {
+        respuestaDiv.innerText = "Error al conectar con el chatbot.";
+      }
+    }
+  </script>
+</body>
+</html>
