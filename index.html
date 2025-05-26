@@ -23,12 +23,28 @@
   </style>
 </head>
 <body>
-  <h1>Mi Chatbot con n8n 🤖 V2.1</h1>
+  <h1>Mi Chatbot con n8n 🤖 V2.2</h1>
   <input type="text" id="msg" placeholder="Escribí tu mensaje..." />
   <button onclick="enviar()">Enviar</button>
   <div id="respuesta">Esperando tu mensaje...</div>
 
   <script>
+    // Función para generar un UUID v4 (para sessionId único)
+    function generarUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    // Obtener o generar sessionId
+    let sessionId = localStorage.getItem("sessionId");
+    if (!sessionId) {
+      sessionId = generarUUID();
+      localStorage.setItem("sessionId", sessionId);
+    }
+
     async function enviar() {
       const mensaje = document.getElementById("msg").value;
       const respuestaDiv = document.getElementById("respuesta");
@@ -41,7 +57,10 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ mensaje })
+          body: JSON.stringify({ 
+            mensaje,
+            sessionId 
+          })
         });
 
         const data = await res.json();
