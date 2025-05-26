@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Chatbot con n8n</title>
+  <title>Chatbot con sesión</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 3rem auto;
-      padding: 1rem;
+      padding: 20px;
     }
     input, button {
-      padding: 0.5rem;
-      font-size: 1rem;
+      padding: 10px;
+      font-size: 16px;
     }
     #respuesta {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f4f4f4;
-      border-radius: 5px;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      min-height: 50px;
     }
   </style>
 </head>
 <body>
-  <h1>Mi Chatbot con n8n 🤖 V2.1</h1>
-  <input type="text" id="msg" placeholder="Escribí tu mensaje..." />
+
+  <h2>Chat con el bot V2.2</h2>
+  <input type="text" id="msg" placeholder="Escribí tu mensaje" />
   <button onclick="enviar()">Enviar</button>
+
   <div id="respuesta">Esperando tu mensaje...</div>
 
   <script>
+    // Podés generar este ID dinámicamente si lo necesitás por usuario
+    const sessionId = "usuario123";
+
     async function enviar() {
       const mensaje = document.getElementById("msg").value;
       const respuestaDiv = document.getElementById("respuesta");
+
+      if (!mensaje.trim()) {
+        respuestaDiv.innerText = "Por favor escribí un mensaje.";
+        return;
+      }
 
       respuestaDiv.innerText = "Pensando...";
 
@@ -41,15 +49,22 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ mensaje })
+          body: JSON.stringify({
+            mensaje,
+            sessionId
+          })
         });
 
         const data = await res.json();
         respuestaDiv.innerText = data.respuesta || "No se recibió respuesta.";
       } catch (error) {
+        console.error("Error:", error);
         respuestaDiv.innerText = "Error al conectar con el chatbot.";
       }
+
+      document.getElementById("msg").value = ""; // Limpiar input
     }
   </script>
+
 </body>
 </html>
