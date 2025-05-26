@@ -23,7 +23,7 @@
   </style>
 </head>
 <body>
-  <h1>Mi Chatbot con n8n 🤖 V2</h1>
+  <h1>Mi Chatbot con n8n 🤖 V2.1</h1>
   <input type="text" id="msg" placeholder="Escribí tu mensaje..." />
   <button onclick="enviar()">Enviar</button>
   <div id="respuesta">Esperando tu mensaje...</div>
@@ -36,7 +36,7 @@
       respuestaDiv.innerText = "Pensando...";
 
       try {
-        const res = await fetch("https://dfce-181-169-80-144.ngrok-free.app/webhook/chatbot", {
+        const res = await fetch("https://dfce-181-169-80-144.ngrok-free.app/webhook/970968e4-a7dc-40c2-b83b-8122247470cd", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
