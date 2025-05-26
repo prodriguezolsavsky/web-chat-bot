@@ -64,7 +64,7 @@
         });
 
         const data = await res.json();
-        respuestaDiv.innerText = data.respuesta || "No se recibió respuesta.";
+        respuestaDiv.innerText = data.output || "No se recibió respuesta.";
       } catch (error) {
         respuestaDiv.innerText = "Error al conectar con el chatbot.";
       }
